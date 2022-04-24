@@ -1,0 +1,55 @@
+Um projeto mern é construido em um Node server e um React server, e na produção, 
+serão usados apenas o Node server com arquivos estáticos de React nele.
+
+#1 - Criar uma pasta server, sera o nosso modulo node, e um projeto react com o npx 'create-react-app', será o nosso modulo de react.
+
+Agora temos uma pasta server (modulo Node) e uma pasta client (projeto React)
+
+#2 - Vamos rodar o 'npm init' no modulo node agora.
+#3 - E também é importante instalar o 'express' e o 'nodemon' no server.
+#4 - Por fim colocamos um linha nos scripts do package.json: "dev": "nodemon index.js".
+
+Com a configuração básica feita, vamos rodar o server usando 'npm run dev' como especificamos no passo 4,
+agora podemos também começar a escrever codigo no index.js do server, começar de fato a aplicação.
+
+#5 - Chamamos o express com 'const express = require('express')'
+#6 - E definimos o app com  'const app = express()'
+#7 - Agora uma função para retornar algo em alguma rota:
+app.get('/hello', (req, res) => {
+    res.send('olá mundo')
+})
+
+O bloco de código do passo 7 é basicamente o express mandando uma resposta quando a rota /hello
+for acessada.
+
+#8 - Para testar a rota, o bloco de código a seguir roda o server em outra porta (visto que o react está usando a 3000)
+app.listen(1337, () =>{
+    console.log('server connected')
+})
+
+Vamos voltar nossa atenção ao react agora, apagamos primeiro o app existente para construir um novo.
+
+#9 - O nono passo é bastante grande, vamos criar um form e inputs no componente app, os inputs são para nome, email, password, vamos criar variáveis para cada um deles, variáveis de estado, a variável normal, e a função para mudar o valor dela.
+#10 - Temos os dados a serem enviados pelo imput, agora precisamos de uma função para
+enviar os dados para o server, a função registerUser() é chamada assim que o botão submit é clicado.
+
+Ao fazermos isso, teremos um erro devido ao cors que precisa ser instalado.
+
+#11 - instale o cors (no server) e adicione as seguintes linhas no inicio do index.js
+const cors = require('cors')
+app.use(cors())
+app.use(express.json())
+
+Os erros persistiram, isso pois não temos a rota no server que foi definida no client, faremos isso agora.
+
+#12 - alteraremos a rota existente com: 
+app.post('/api/register', (req, res) => {
+    res.json({ status: 'ok' })
+});
+
+Pronto, agora nosso client react envia dados para nosso server node!
+Agora vamos daum um jeito de armazenar esses dados.
+
+#13 - instalando o mongoose com 'npm install mongoose' no diretorio do server.
+#14 - criar uma pasta models no server, e nela um arquivo para ser o nosso modulo de user e após isso vamos preencher ela.
+#15 - chamar o mongoose no index, e atribuir os dados ao mongo.
